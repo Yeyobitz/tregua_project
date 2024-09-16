@@ -1,0 +1,32 @@
+/* static/css/style.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 69.2px;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+.navbar-brand {
+    font-family: 'Georgia', serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+footer p {
+    margin: 0;
+}
+
+.carousel-item img {
+    height: 500px;
+    object-fit: cover;
+}
+
+h2 {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+}

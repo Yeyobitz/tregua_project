@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <!-- Indicadores -->
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Imagen 1">
+    </div>
+    <!-- Más elementos del carrusel -->
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <!-- Control previo -->
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <!-- Control siguiente -->
+  </button>
+</div>
+<div class="container my-5">
+    <h2 class="text-center">Bienvenido a Tregua</h2>
+    <p class="text-center">Disfruta de una experiencia culinaria única.</p>
+</div>
+<!-- Sección "Nuestra Historia" -->
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/500x400" class="img-fluid" alt="Imagen de Nuestra Historia">
+        </div>
+        <div class="col-md-6">
+            <h2>Nuestra Historia</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac vestibulum erat, sed ornare massa. Suspendisse potenti. Sed vitae consectetur turpis.
+            </p>
+            <a href="{% url 'nuestra_historia' %}" class="btn btn-primary">Leer más</a>
+        </div>
+    </div>
+</div>
+<!-- Sección "Nuestros Platos" -->
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6 order-md-2">
+            <img src="https://via.placeholder.com/500x400" class="img-fluid" alt="Imagen de Nuestros Platos">
+        </div>
+        <div class="col-md-6 order-md-1">
+            <h2>Nuestros Platos</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel elit at dui condimentum lobortis.
+            </p>
+            <a href="{% url 'nuestros_platos' %}" class="btn btn-primary">Descubrir más</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

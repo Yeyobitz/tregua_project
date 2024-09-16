@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h2 class="text-center mb-4">Reservas</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
+                </div>
+                <div class="mb-3">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefono" placeholder="Ingresa tu teléfono">
+                </div>
+                <div class="mb-3">
+                    <label for="fecha" class="form-label">Fecha y Hora</label>
+                    <input type="datetime-local" class="form-control" id="fecha">
+                </div>
+                <div class="mb-3">
+                    <label for="personas" class="form-label">Número de Personas</label>
+                    <input type="number" class="form-control" id="personas" min="1" max="8">
+                </div>
+                <button type="submit" class="btn btn-primary">Reservar</button>
+            </form>
+        </div>
+    </div>
+</div>{% endblock %}
