@@ -7,28 +7,30 @@
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <h2 class="text-center mb-4">Reserva tu Mesa</h2>
-            <form method="post" class="needs-validation" novalidate>
+            
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="needs-validation">
                 {% csrf_token %}
+                {% for field in form %}
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre Completo</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="tel" class="form-control" id="telefono" name="telefono" required>
-                </div>
-                <div class="mb-3">
-                    <label for="fecha" class="form-label">Fecha y Hora</label>
-                    <input type="datetime-local" class="form-control" id="fecha" name="fecha" required>
-                </div>
-                <div class="mb-3">
-                    <label for="personas" class="form-label">Número de Personas</label>
-                    <input type="number" class="form-control" id="personas" name="personas" min="1" max="10" required>
-                </div>
+                {% endfor %}
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
                 </div>
