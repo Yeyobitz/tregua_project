@@ -1,8 +1,9 @@
-/* static/css/style.css */
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 69.2px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .navbar {
@@ -11,14 +12,19 @@ body {
     top: 0;
     z-index: 1000;
 }
+
 .navbar-brand {
     font-family: 'Georgia', serif;
     font-size: 1.8rem;
     font-weight: bold;
 }
 
-footer p {
-    margin: 0;
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
 }
 
 .carousel-item img {
@@ -29,4 +35,14 @@ footer p {
 h2 {
     font-family: 'Georgia', serif;
     font-weight: bold;
+    color: #333;
+}
+
+.card {
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
 }

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Tregua - Nuestros Platos{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Nuestros Platos Destacados</h2>
+    <div class="row">
+        {% for plato in platos %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{{ plato.imagen.url }}" class="card-img-top" alt="{{ plato.nombre }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ plato.nombre }}</h5>
+                    <p class="card-text">{{ plato.descripcion }}</p>
+                    <p class="card-text"><strong>${{ plato.precio }}</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
