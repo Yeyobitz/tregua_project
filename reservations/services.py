@@ -1,6 +1,53 @@
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Reservation
+import requests
+
+class SMSService:
+    @staticmethod
+    def format_phone_number(phone):
+        # Eliminar cualquier espacio o carácter no numérico
+        phone = ''.join(filter(str.isdigit, phone))
+        
+        # Si no empieza con 56, agregarlo
+        if not phone.startswith('56'):
+            phone = '56' + phone
+            
+        # Agregar el + al inicio
+        return '+' + phone
+
+    @staticmethod
+    def send_sms(phone_number, message):
+        # Formatear el número de teléfono
+        formatted_phone = SMSService.format_phone_number(phone_number)
+        print(f"Número original: {phone_number}")
+        print(f"Número formateado: {formatted_phone}")
+        
+        url = 'https://lq6zyj.api.infobip.com/sms/2/text/advanced'
+        
+        headers = {
+            'Authorization': f'App {settings.INFOBIP_API_KEY}',
+            'Content-Type': 'application/json'
+        }
+        
+        payload = {
+            "messages": [
+                {
+                    "from": "Tregua",
+                    "destinations": [{"to": formatted_phone}],
+                    "text": message
+                }
+            ]
+        }
+        
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            print(f"Respuesta de InfoBip: {response.text}")
+            
+            if response.status_code == 200:
+                return True, "SMS enviado correctamente"
+            return False, f"Error: {response.text}"
+        except Exception as e:
+            return False, f"Error: {str(e)}"
 
 class ReservationService:
     @staticmethod
@@ -20,13 +67,46 @@ class ReservationService:
         Gracias por elegir Tregua Restaurant.
         '''
         
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [reservation.customer_email],
-            fail_silently=False,
-        )
+        try:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[reservation.customer_email],
+                fail_silently=False,
+            )
+            return True
+        except Exception as e:
+            print(f"Error enviando email: {str(e)}")
+            return False
+
+    @staticmethod
+    def send_sms_notification(reservation):
+        message = f'''
+        Reserva {reservation.get_status_display()}
+        Código: {reservation.confirmation_code}
+        Fecha: {reservation.date}
+        Hora: {reservation.time}
+        '''
+        
+        success, message = SMSService.send_sms(reservation.customer_phone, message)
+        print(f"Resultado SMS: {success} - {message}")
+        return success
+
+    @staticmethod
+    def send_notifications(reservation):
+        results = {
+            'email': False,
+            'sms': False
+        }
+        
+        if reservation.notification_preference in ['EMAIL', 'BOTH']:
+            results['email'] = ReservationService.send_confirmation_email(reservation)
+
+        if reservation.notification_preference in ['SMS', 'BOTH']:
+            results['sms'] = ReservationService.send_sms_notification(reservation)
+
+        return results
 
     @staticmethod
     def check_table_availability(date, time, number_of_people):

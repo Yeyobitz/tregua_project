@@ -17,7 +17,13 @@ def reservas(request):
             if is_available:
                 reservation.table = result
                 reservation.save()
-                messages.success(request, 'Reserva realizada correctamente')
+                notification_results = ReservationService.send_notifications(reservation)
+                
+                if notification_results['email'] or notification_results['sms']:
+                    messages.success(request, 'Reserva realizada correctamente. Se han enviado las notificaciones.')
+                else:
+                    messages.warning(request, 'Reserva realizada, pero hubo problemas al enviar las notificaciones.')
+                    
                 return redirect('reservations:reservas')
             else:
                 messages.error(request, result)

@@ -110,11 +110,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-cl'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
@@ -134,3 +136,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# SMS Settings (InfoBip)
+if DEBUG:
+    SMS_PROVIDER = 'INFOBIP'
+    INFOBIP_API_KEY = '22ae4c7b116930c1e8564c1791a61e79-b8749142-4008-4921-9714-3dc1c7296376'
+    INFOBIP_BASE_URL = 'https://lq6zyj.api.infobip.com'
+else:
+    SMS_PROVIDER = os.environ.get('SMS_PROVIDER', 'INFOBIP')
+    INFOBIP_API_KEY = os.environ.get('INFOBIP_API_KEY')
+    INFOBIP_BASE_URL = os.environ.get('INFOBIP_BASE_URL')
+
+# Configuración de Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'tregua.restaurant@gmail.com'
+EMAIL_HOST_PASSWORD = 'zpmrqdcqfixwxbzb'
+
+# Usar un alias de Gmail
+DEFAULT_FROM_EMAIL = '"Tregua Restaurant" <tregua.restaurant@gmail.com>'
+SERVER_EMAIL = 'no-reply@tregua.restaurant'
+
+# Configuración adicional de seguridad
+EMAIL_USE_SSL = False
+EMAIL_TIMEOUT = 30
+EMAIL_SSL_CERTFILE = None
+EMAIL_SSL_KEYFILE = None
+
+# Para debug
+import logging
+logging.getLogger('django.mail').setLevel(logging.DEBUG)

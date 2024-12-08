@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import User
+from datetime import datetime, date
 
 class Table(models.Model):
     number = models.IntegerField(unique=True)
@@ -45,9 +46,15 @@ class Reservation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def clean(self):
-        if self.date:  # Add this check
-            if self.date < timezone.now().date():
+        if self.date:
+            today = date.today()
+            if self.date < today:
                 raise ValidationError('No se pueden hacer reservaciones en fechas pasadas')
+            elif self.date == today:
+                # Si es para hoy, validar que la hora sea futura
+                now = timezone.localtime().time()
+                if self.time and self.time < now:
+                    raise ValidationError('No se pueden hacer reservaciones en horas pasadas')
 
         
     def save(self, *args, **kwargs):
