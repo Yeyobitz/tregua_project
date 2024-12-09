@@ -48,3 +48,9 @@ class ReservationForm(forms.ModelForm):
     
         return cleaned_data
     
+    def clean_number_of_people(self):
+        number_of_people = self.cleaned_data.get('number_of_people')
+        if number_of_people < 1 or number_of_people > 8:
+            raise forms.ValidationError('El número de personas debe estar entre 1 y 8.')
+        return number_of_people
+    
