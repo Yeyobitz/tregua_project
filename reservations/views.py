@@ -8,6 +8,8 @@ def reservas(request):
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = form.save(commit=False)
+            reservation.notification_preference = request.POST.get('notification_preference', 'EMAIL')
+            reservation.save()
             is_available, result = ReservationService.check_table_availability(
                 form.cleaned_data['date'],
                 form.cleaned_data['time'],

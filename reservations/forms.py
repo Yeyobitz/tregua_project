@@ -28,10 +28,23 @@ class ReservationForm(forms.ModelForm):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '1', 'max': '8'}),
         label='Número de Personas'
     )
+    notification_preference = forms.ChoiceField(
+        choices=Reservation.NOTIFICATION_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label='Preferencia de Notificación'
+    )
 
     class Meta:
         model = Reservation
-        fields = ['customer_name', 'customer_email', 'customer_phone', 'date', 'time', 'number_of_people']
+        fields = [
+            'customer_name', 
+            'customer_email', 
+            'customer_phone', 
+            'date', 
+            'time', 
+            'number_of_people',
+            'notification_preference'
+        ]
 
     def clean(self):
         cleaned_data = super().clean()

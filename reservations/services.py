@@ -89,8 +89,10 @@ class ReservationService:
         Hora: {reservation.time}
         '''
         
-        success, message = SMSService.send_sms(reservation.customer_phone, message)
-        print(f"Resultado SMS: {success} - {message}")
+        print("=== INICIO ENVÍO SMS ===")
+        success, response_message = SMSService.send_sms(reservation.customer_phone, message)
+        print(f"Respuesta del servicio SMS: {response_message}")
+        print("=== FIN ENVÍO SMS ===")
         return success
 
     @staticmethod
@@ -100,12 +102,28 @@ class ReservationService:
             'sms': False
         }
         
+        print("=== INICIO ENVÍO DE NOTIFICACIONES ===")
+        print(f"Reserva ID: {reservation.id}")
+        print(f"Preferencia de notificación: {reservation.notification_preference}")
+        print(f"Teléfono: {reservation.customer_phone}")
+        
         if reservation.notification_preference in ['EMAIL', 'BOTH']:
+            print("Intentando enviar email...")
             results['email'] = ReservationService.send_confirmation_email(reservation)
+            print(f"Resultado email: {results['email']}")
 
         if reservation.notification_preference in ['SMS', 'BOTH']:
+            print("Intentando enviar SMS...")
+            # Verificar formato del teléfono
+            formatted_phone = SMSService.format_phone_number(reservation.customer_phone)
+            print(f"Teléfono original: {reservation.customer_phone}")
+            print(f"Teléfono formateado: {formatted_phone}")
+            
             results['sms'] = ReservationService.send_sms_notification(reservation)
+            print(f"Resultado SMS: {results['sms']}")
 
+        print(f"Resultados finales: {results}")
+        print("=== FIN ENVÍO DE NOTIFICACIONES ===")
         return results
 
     @staticmethod
